@@ -39,11 +39,27 @@ class TodoListPage extends StatelessWidget {
                   ),
                 ],
               ),
+              const SizedBox(height: 16),
+              SizedBox(
+                child: ListView(
+                  children: [
+                    ListTile(
+                      title: Text('Tarefa 1'),
+                    ),
+                  ],
+                ),
+              ),
+              const SizedBox(height: 16),
               Row(
                 children: [
-                  const Text('Você possue zero tarefa pendente'),
+                  const Expanded(
+                    child: Text('Você possue zero tarefa pendente'),
+                  ),
                   ElevatedButton(
                     onPressed: () {},
+                    style: ElevatedButton.styleFrom(
+                      primary: Colors.blue,
+                    ),
                     child: const Text('Limpar Tudo'),
                   ),
                 ],
