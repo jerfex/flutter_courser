@@ -3,6 +3,10 @@ import 'package:flutter/material.dart';
 class TodoListPage extends StatelessWidget {
   TodoListPage({Key? key}) : super(key: key);
 
+  final TextEditingController todoController = TextEditingController();
+
+  List<String> todos = [];
+
   final TextEditingController emailController = TextEditingController();
 
   @override
@@ -16,10 +20,10 @@ class TodoListPage extends StatelessWidget {
             children: [
               Row(
                 children: [
-                  const Expanded(
-                    flex: 4,
+                  Expanded(
                     child: TextField(
-                      decoration: InputDecoration(
+                      controller: todoController,
+                      decoration: const InputDecoration(
                         border: OutlineInputBorder(),
                         labelText: 'Adicione uma tarefa',
                         hintText: 'Estudar flutter',
@@ -28,7 +32,10 @@ class TodoListPage extends StatelessWidget {
                   ),
                   const SizedBox(width: 8),
                   ElevatedButton(
-                    onPressed: () {},
+                    onPressed: () {
+                      String text = todoController.text;
+                      todos.add(text);
+                    },
                     style: ElevatedButton.styleFrom(
                         primary: Colors.blue,
                         padding: const EdgeInsets.all(16)),
@@ -42,10 +49,16 @@ class TodoListPage extends StatelessWidget {
               const SizedBox(height: 16),
               SizedBox(
                 child: ListView(
-                  children: [
+                  children: const [
                     ListTile(
                       title: Text('Tarefa 1'),
+                      subtitle: Text('20/11/2022'),
+                      leading: Icon(Icons.save),
                     ),
+                    ListTile(
+                      title: Text('Tarefa 2'),
+                      subtitle: Text('21/11/2022'),
+                    )
                   ],
                 ),
               ),
