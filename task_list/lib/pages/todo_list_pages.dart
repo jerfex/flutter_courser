@@ -1,20 +1,22 @@
 import 'package:flutter/material.dart';
 
-class TodoListPage extends StatelessWidget {
-  TodoListPage({Key? key}) : super(key: key);
+class TodoListPage extends StatefulWidget {
+  const TodoListPage({Key? key}) : super(key: key);
 
+  @override
+  State<TodoListPage> createState() => _TodoListPageState();
+}
+
+class _TodoListPageState extends State<TodoListPage> {
   final TextEditingController todoController = TextEditingController();
 
   List<String> todos = [];
-
-  final TextEditingController emailController = TextEditingController();
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: Center(
         child: Padding(
-          padding: const EdgeInsets.all(8.0),
+          padding: const EdgeInsets.symmetric(horizontal: 16),
           child: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
@@ -34,11 +36,14 @@ class TodoListPage extends StatelessWidget {
                   ElevatedButton(
                     onPressed: () {
                       String text = todoController.text;
-                      todos.add(text);
+                      setState(() {
+                        todos.add(text);
+                      });
+                      todoController.clear();
                     },
                     style: ElevatedButton.styleFrom(
                         primary: Colors.blue,
-                        padding: const EdgeInsets.all(16)),
+                        padding: const EdgeInsets.all(14)),
                     child: const Icon(
                       Icons.add,
                       size: 30,
@@ -47,18 +52,20 @@ class TodoListPage extends StatelessWidget {
                 ],
               ),
               const SizedBox(height: 16),
-              SizedBox(
+              Flexible(
                 child: ListView(
-                  children: const [
-                    ListTile(
-                      title: Text('Tarefa 1'),
-                      subtitle: Text('20/11/2022'),
-                      leading: Icon(Icons.save),
-                    ),
-                    ListTile(
-                      title: Text('Tarefa 2'),
-                      subtitle: Text('21/11/2022'),
-                    )
+                  shrinkWrap: true,
+                  children: [
+                    for (String todo in todos)
+                      ListTile(
+                        title: Text(todo),
+                        subtitle: const Text('20/11/2022'),
+                        leading: const Icon(
+                          Icons.save,
+                          size: 30,
+                        ),
+                        onTap: () {},
+                      ),
                   ],
                 ),
               ),
