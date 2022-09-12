@@ -1,30 +1,84 @@
-// This is a basic Flutter widget test.
-//
-// To perform an interaction with a widget in your test, use the WidgetTester
-// utility in the flutter_test package. For example, you can send tap and scroll
-// gestures. You can also use WidgetTester to find child widgets in the widget
-// tree, read text, and verify that the values of widget properties are correct.
-
 import 'package:flutter/material.dart';
-import 'package:flutter_test/flutter_test.dart';
+import 'package:flutter_slidable/flutter_slidable.dart';
 
-import 'package:task_list/main.dart';
+void main() => runApp(const MyApp());
 
-void main() {
-  testWidgets('Counter increments smoke test', (WidgetTester tester) async {
-    // Build our app and trigger a frame.
-    await tester.pumpWidget(const MyApp());
+class MyApp extends StatelessWidget {
+  const MyApp({
+    Key? key,
+  }) : super(key: key);
 
-    // Verify that our counter starts at 0.
-    expect(find.text('0'), findsOneWidget);
-    expect(find.text('1'), findsNothing);
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      title: 'Slidable Example',
+      home: Scaffold(
+        body: ListView(
+          children: [
+            Slidable(
+              // Specify a key if the Slidable is dismissible.
+              key: const ValueKey(0),
 
-    // Tap the '+' icon and trigger a frame.
-    await tester.tap(find.byIcon(Icons.add));
-    await tester.pump();
+              // The start action pane is the one at the left or the top side.
+              startActionPane: ActionPane(
+                // A motion is a widget used to control how the pane animates.
+                motion: const ScrollMotion(),
 
-    // Verify that our counter has incremented.
-    expect(find.text('0'), findsNothing);
-    expect(find.text('1'), findsOneWidget);
-  });
+                // A pane can dismiss the Slidable.
+                dismissible: DismissiblePane(onDismissed: () {}),
+
+                // All actions are defined in the children parameter.
+                children: const [
+                  // A SlidableAction can have an icon and/or a label.
+                  SlidableAction(
+                    onPressed: doNothing,
+                    backgroundColor: Color(0xFFFE4A49),
+                    foregroundColor: Colors.white,
+                    icon: Icons.delete,
+                    label: 'Delete',
+                  ),
+                  SlidableAction(
+                    onPressed: doNothing,
+                    backgroundColor: Color(0xFF21B7CA),
+                    foregroundColor: Colors.white,
+                    icon: Icons.share,
+                    label: 'Share',
+                  ),
+                ],
+              ),
+
+              // The end action pane is the one at the right or the bottom side.
+              endActionPane: const ActionPane(
+                motion: ScrollMotion(),
+                children: [
+                  SlidableAction(
+                    // An action can be bigger than the others.
+                    flex: 2,
+                    onPressed: doNothing,
+                    backgroundColor: Color(0xFF7BC043),
+                    foregroundColor: Colors.white,
+                    icon: Icons.archive,
+                    label: 'Archive',
+                  ),
+                  SlidableAction(
+                    onPressed: doNothing,
+                    backgroundColor: Color(0xFF0392CF),
+                    foregroundColor: Colors.white,
+                    icon: Icons.save,
+                    label: 'Save',
+                  ),
+                ],
+              ),
+
+              // The child of the Slidable is what the user sees when the
+              // component is not dragged.
+              child: const ListTile(title: Text('Slide me')),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
 }
+
+void doNothing(BuildContext context) {}
