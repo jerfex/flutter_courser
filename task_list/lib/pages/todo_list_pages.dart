@@ -92,9 +92,9 @@ class _TodoListPageState extends State<TodoListPage> {
     );
   }
 
-  void onDelete(Todo todo) {
-    setState(() {
-      todos.remove(todo);
-    });
+  @override
+  void setState(VoidCallback fn) {
+    todos.remove(Todo);
+    super.setState(fn);
   }
 }
