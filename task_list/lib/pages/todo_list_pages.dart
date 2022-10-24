@@ -48,7 +48,7 @@ class _TodoListPageState extends State<TodoListPage> {
                         todoController.clear();
                       },
                       style: ElevatedButton.styleFrom(
-                          primary: Colors.blue,
+                          backgroundColor: Colors.blue,
                           padding: const EdgeInsets.all(14)),
                       child: const Icon(
                         Icons.add,
@@ -63,7 +63,10 @@ class _TodoListPageState extends State<TodoListPage> {
                     shrinkWrap: true,
                     children: [
                       for (Todo todo in todos)
-                        TodoListItem(todo: todo, onDelete: onDelete),
+                        TodoListItem(
+                          todo: todo,
+                          onDelete: onDelete,
+                        ),
                     ],
                   ),
                 ),
@@ -75,10 +78,13 @@ class _TodoListPageState extends State<TodoListPage> {
                         'Você possui ${todos.length} tarefa pendente',
                       ),
                     ),
+                    const SizedBox(
+                      width: 8,
+                    ),
                     ElevatedButton(
                       onPressed: () {},
                       style: ElevatedButton.styleFrom(
-                        primary: Colors.blue,
+                        backgroundColor: Colors.blue,
                       ),
                       child: const Text('Limpar Tudo'),
                     ),
@@ -92,9 +98,9 @@ class _TodoListPageState extends State<TodoListPage> {
     );
   }
 
-  @override
-  void setState(VoidCallback fn) {
-    todos.remove(Todo);
-    super.setState(fn);
+  void onDelete(Todo todo) {
+    setState(() {
+      todos.remove(todo);
+    });
   }
 }

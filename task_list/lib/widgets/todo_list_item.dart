@@ -6,9 +6,12 @@ import 'package:intl/intl.dart';
 import '../models/todo.dart';
 
 class TodoListItem extends StatelessWidget {
-  const TodoListItem(
-      {Key? key, required this.todo, required, required this.onDelete})
-      : super(key: key);
+  const TodoListItem({
+    Key? key,
+    required this.todo,
+    required,
+    required this.onDelete,
+  }) : super(key: key);
   final Todo todo;
   final Function(Todo) onDelete;
 
@@ -17,22 +20,15 @@ class TodoListItem extends StatelessWidget {
     return Padding(
       padding: const EdgeInsets.all(2.0),
       child: Slidable(
-        // Specify a key if the Slidable is dismissible.
-        key: const ValueKey(0),
-
         // The start action pane is the one at the left or the top side.
         startActionPane: ActionPane(
           // A motion is a widget used to control how the pane animates.
           motion: const ScrollMotion(),
-
-          // A pane can dismiss the Slidable.
-          dismissible: DismissiblePane(onDismissed: () {}),
-
           // All actions are defined in the children parameter.
           children: [
             // A SlidableAction can have an icon and/or a label.
             SlidableAction(
-              onPressed: onDelete(todo),
+              onPressed: (context) => {onDelete(todo)},
               backgroundColor: const Color(0xFFFE4A49),
               foregroundColor: Colors.white,
               icon: Icons.delete,
@@ -40,8 +36,6 @@ class TodoListItem extends StatelessWidget {
             ),
           ],
         ),
-        // The child of the Slidable is what the user sees when the
-        // component is not dragged.
         child: Container(
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(4),
