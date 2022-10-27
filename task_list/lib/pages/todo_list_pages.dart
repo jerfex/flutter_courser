@@ -30,7 +30,7 @@ class _TodoListPageState extends State<TodoListPage> {
                   children: [
                     Expanded(
                       child: TextField(
-                        controller: todoController..text.isNotEmpty,
+                        controller: todoController,
                         decoration: const InputDecoration(
                           border: OutlineInputBorder(),
                           labelText: 'Adicione uma tarefa',
