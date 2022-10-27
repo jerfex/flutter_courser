@@ -14,6 +14,8 @@ class _TodoListPageState extends State<TodoListPage> {
   final TextEditingController todoController = TextEditingController();
 
   List<Todo> todos = [];
+  Todo? deletedTodo;
+  int? deletedTodoPos;
   @override
   Widget build(BuildContext context) {
     return SafeArea(
@@ -28,7 +30,7 @@ class _TodoListPageState extends State<TodoListPage> {
                   children: [
                     Expanded(
                       child: TextField(
-                        controller: todoController,
+                        controller: todoController..text.isNotEmpty,
                         decoration: const InputDecoration(
                           border: OutlineInputBorder(),
                           labelText: 'Adicione uma tarefa',
@@ -82,7 +84,7 @@ class _TodoListPageState extends State<TodoListPage> {
                       width: 8,
                     ),
                     ElevatedButton(
-                      onPressed: () {},
+                      onPressed: showDeleteTodosConfimationDialog,
                       style: ElevatedButton.styleFrom(
                         backgroundColor: Colors.blue,
                       ),
@@ -99,8 +101,63 @@ class _TodoListPageState extends State<TodoListPage> {
   }
 
   void onDelete(Todo todo) {
+    deletedTodo = todo;
+    deletedTodoPos = todos.indexOf(todo);
+
     setState(() {
       todos.remove(todo);
+    });
+    ScaffoldMessenger.of(context).clearSnackBars();
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: Text(
+          'Tarefa ${todo.title} foi removida com sucesso!',
+          style: const TextStyle(color: Colors.white),
+        ),
+        action: SnackBarAction(
+          label: 'Desfazer',
+          textColor: const Color(0xff00d7f3),
+          onPressed: () {
+            setState(() {
+              todos.insert(deletedTodoPos!, deletedTodo!);
+            });
+          },
+        ),
+        duration: const Duration(seconds: 5),
+      ),
+    );
+  }
+
+  void showDeleteTodosConfimationDialog() {
+    showDialog(
+      context: context,
+      builder: (context) => AlertDialog(
+        title: const Text('Limpar Tudo'),
+        content:
+            const Text('Você tem certeza que deseja apagar todas as tarefas?'),
+        actions: [
+          TextButton(
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+              style: TextButton.styleFrom(
+                  foregroundColor: const Color(0xff00d7f3)),
+              child: const Text('Cancelar')),
+          TextButton(
+              onPressed: () {
+                Navigator.of(context).pop();
+                deleteAllTodos();
+              },
+              style: TextButton.styleFrom(foregroundColor: Colors.red),
+              child: const Text('Limpar Tudo!')),
+        ],
+      ),
+    );
+  }
+
+  void deleteAllTodos() {
+    setState(() {
+      todos.clear();
     });
   }
 }
