@@ -1,8 +1,17 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:task_list/pages/notification_service.dart';
 import 'package:task_list/pages/todo_list_pages.dart';
 
 void main() {
-  runApp(const MyApp());
+  runApp(MultiProvider(
+    providers: [
+      Provider<NotificationService>(
+        create: (context) => NotificationService(),
+      )
+    ],
+    child: const MyApp(),
+  ));
 }
 
 class MyApp extends StatelessWidget {

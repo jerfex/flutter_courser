@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:flutter_native_timezone/flutter_native_timezone.dart';
+import 'package:task_list/models/routes.dart';
 import 'package:timezone/timezone.dart' as tz;
 import 'package:timezone/data/latest_all.dart' as tz;
 
@@ -39,14 +40,15 @@ class NotificationService {
       const InitializationSettings(
         android: android,
       ),
-      onDidReceiveNotificationResponse: _onSelectNotification,
+      onDidReceiveBackgroundNotificationResponse:
+          _onSelectNotification(android.defaultIcon),
     );
   }
 
   _onSelectNotification(String? payload) {
     if (payload != null && payload.isEmpty) {
-      Navigator.of(Routes.navigatorkey!.currentContext!)
-          .pushReplacement(payload);
+      Navigator.of(Routes.Navigatorkey!.currentContext!)
+          .pushReplacementNamed(payload);
     }
   }
 
@@ -74,7 +76,7 @@ class NotificationService {
     final details =
         await localNotificationsPlugin.getNotificationAppLaunchDetails();
     if (details != null && details.didNotificationLaunchApp) {
-      _onSelectNotification(details.payload);
+      _onSelectNotification(details.notificationResponse?.payload);
     }
   }
 }
